@@ -5,9 +5,15 @@ try:
     from langchain_core.retrievers import BaseRetriever
     from langchain_core.documents import Document
     from langchain_core.callbacks import CallbackManagerForRetrieverRun
+    from langchain_core.callbacks import CallbackManagerForRetrieverRun
 except ImportError:
     BaseChatMessageHistory = object
     BaseRetriever = object
+    BaseMessage = object
+    HumanMessage = object
+    AIMessage = object
+    Document = object
+    CallbackManagerForRetrieverRun = object
 
 from ..main import Memory
 

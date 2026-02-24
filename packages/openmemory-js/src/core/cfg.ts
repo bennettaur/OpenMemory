@@ -57,6 +57,11 @@ export const env = {
     AWS_REGION: process.env.AWS_REGION || "",
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || "",
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
+    siray_key: process.env.SIRAY_API_TOKEN || process.env.OM_SIRAY_API_TOKEN || "",
+    siray_base_url: str(
+        process.env.OM_SIRAY_BASE_URL,
+        "https://api.siray.ai/v1",
+    ),
     ollama_url: str(
         process.env.OLLAMA_URL || process.env.OM_OLLAMA_URL,
         "http://localhost:11434",

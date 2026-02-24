@@ -58,6 +58,11 @@ class EnvConfig:
         self.aws_region = get("ai", "aws_region", "AWS_REGION", None)
         self.aws_access_key_id = get("ai", "aws_access_key_id", "AWS_ACCESS_KEY_ID", None)
         self.aws_secret_access_key = get("ai", "aws_secret_access_key", "AWS_SECRET_ACCESS_KEY", None)
+
+        self.siray_key = get("ai", "siray_key", "SIRAY_API_TOKEN", "") or os.getenv("OM_SIRAY_API_TOKEN")
+        self.siray_base_url = get("ai", "siray_base", "OM_SIRAY_BASE_URL", "https://api.siray.ai/v1")
+        self.siray_model = get("ai", "siray_model", "OM_SIRAY_MODEL", None)
+
         self.vec_dim = int(num(os.getenv("OM_VEC_DIM"), 1536))
         self.min_score = num(os.getenv("OM_MIN_SCORE"), 0.3)
         self.keyword_boost = num(os.getenv("OM_KEYWORD_BOOST"), 2.5)

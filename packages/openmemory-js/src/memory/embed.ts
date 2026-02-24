@@ -142,6 +142,8 @@ async function embed_with_provider(
             return await emb_local(t, s);
         case "synthetic":
             return gen_syn_emb(t, s);
+        case "siray":
+            return await emb_siray(t, s);
         default:
             throw new Error(`Unknown embedding provider: ${provider}`);
     }
@@ -398,6 +400,31 @@ async function emb_aws(t: string, s: string): Promise<number[]> {
     } catch (error) {
         throw new Error(`AWS: ${error}`);
     }
+}
+
+async function emb_siray(t: string, s: string): Promise<number[]> {
+    if (!env.siray_key) throw new Error("Siray key missing");
+    const m = get_model(s, "siray");
+
+    // Use direct fetch since we might need custom handling or just to be safe
+    // adapting from emb_openai but with siray vars
+    const r = await fetchWithTimeout(
+        `${env.siray_base_url.replace(/\/$/, "")}/embeddings`,
+        {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${env.siray_key}`,
+            },
+            body: JSON.stringify({
+                input: t,
+                model: m,
+                // Siray docs didn't specify dimensions support for all models, assume standard if compatible
+            }),
+        },
+    );
+    if (!r.ok) throw new Error(`Siray: ${r.status}`);
+    return ((await r.json()) as any).data[0].embedding;
 }
 
 async function emb_local(t: string, s: string): Promise<number[]> {
@@ -686,6 +713,16 @@ export const getEmbeddingInfo = () => {
             !!env.AWS_SECRET_ACCESS_KEY;
         i.batch_api = env.embed_mode === "simple";
         i.model = "amazon.titan-embed-text-v2:0";
+    } else if (env.emb_kind === "siray") {
+        i.configured = !!env.siray_key;
+        i.base_url = env.siray_base_url;
+        i.models = {
+            episodic: get_model("episodic", "siray"),
+            semantic: get_model("semantic", "siray"),
+            procedural: get_model("procedural", "siray"),
+            emotional: get_model("emotional", "siray"),
+            reflective: get_model("reflective", "siray"),
+        };
     } else if (env.emb_kind === "ollama") {
         i.configured = true;
         i.url = env.ollama_url;

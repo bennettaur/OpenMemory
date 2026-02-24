@@ -53,6 +53,7 @@ const get_defaults = (): model_cfg => ({
         openai: "text-embedding-3-small",
         gemini: "models/embedding-001",
         aws: "amazon.titan-embed-text-v2:0",
+        siray: "text-embedding-3-small",
         local: "all-MiniLM-L6-v2",
     },
     semantic: {
@@ -60,6 +61,7 @@ const get_defaults = (): model_cfg => ({
         openai: "text-embedding-3-small",
         gemini: "models/embedding-001",
         aws: "amazon.titan-embed-text-v2:0",
+        siray: "text-embedding-3-small",
         local: "all-MiniLM-L6-v2",
     },
     procedural: {
