@@ -24,5 +24,8 @@ dependencies = [
     "openai>=1.0",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/openmemory"]
